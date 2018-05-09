@@ -149,8 +149,6 @@ def SymbolArray(Genome, symbol):
         array[i] = PatternCount(symbol, ExtendedGenome[i:i+(n//2)])
     return array
 
-print('Hello world')
-
 #20180509 wed
 # Input:  Strings Genome and symbol
 # Output: SymbolArray(Genome, symbol)
@@ -172,17 +170,12 @@ def SymbolArray(Genome, symbol):
 
 
 # Reproduce the PatternCount function here.
-def PatternCount(ExtendedGenome,symbol):
+def PatternCount(Pattern,Text):
     count = 0
-    for i in range(len(ExtendedGenome)):
-        if ExtendedGenome[i:i+len(symbol)] == symbol:
+    for i in range(len(Pattern)):
+        if Pattern[i:i+len(Text)] == Text:
             count +=1
     return count
-
-print(SymbolArray('AAAAGGGG', 'A'))
-Genome ='AGCGTGCCGAAATATGCCGCCAGACCTGCTGCGGTGGCCTCGCCGACTTCACGGATGCCAAGTGCATAGAGGAAGCGAGCAAAGGTGGTTTCTTTCGCTTTATCCAGCGCGTTAACCACGTTCTGTGCCGACTTT'
-symbol = 'CC'
-print(SymbolArray(Genome,symbol))
 
 def FasterSymbolArray(Genome, symbol):
     array = {}
@@ -191,7 +184,6 @@ def FasterSymbolArray(Genome, symbol):
 
     # look at the first half of Genome to compute first array value
     array[0] = PatternCount(symbol, Genome[0:n//2])
-
     for i in range(1, n):
         # start by setting the current array value equal to the previous array value
         array[i] = array[i-1]
@@ -202,3 +194,10 @@ def FasterSymbolArray(Genome, symbol):
         if ExtendedGenome[i+(n//2)-1] == symbol:
             array[i] = array[i]+1
     return array
+
+print('Hello world')
+print(FasterSymbolArray('AAAAGGGG', 'A'))
+Genome ='AGCGTGCCGAAATATGCCGCCAGACCTGCTGCGGTGGCCTCGCCGACTTCACGGATGCCAAGTGCATAGAGGAAGCGAGCAAAGGTGGTTTCTTTCGCTTTATCCAGCGCGTTAACCACGTTCTGTGCCGACTTT'
+symbol = 'CC'
+#print(SymbolArray(Genome,symbol))
+print(FasterSymbolArray(Genome, symbol))
