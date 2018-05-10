@@ -181,9 +181,9 @@ def FasterSymbolArray(Genome, symbol):
     array = {}
     n = len(Genome)
     ExtendedGenome = Genome + Genome[0:n//2]
-
+    print(ExtendedGenome[-1])
     # look at the first half of Genome to compute first array value
-    array[0] = PatternCount(symbol, Genome[0:n//2])
+    array[0] = PatternCount(Genome[0:n//2], symbol)
     for i in range(1, n):
         # start by setting the current array value equal to the previous array value
         array[i] = array[i-1]
@@ -195,9 +195,40 @@ def FasterSymbolArray(Genome, symbol):
             array[i] = array[i]+1
     return array
 
-print('Hello world')
-print(FasterSymbolArray('AAAAGGGG', 'A'))
-Genome ='AGCGTGCCGAAATATGCCGCCAGACCTGCTGCGGTGGCCTCGCCGACTTCACGGATGCCAAGTGCATAGAGGAAGCGAGCAAAGGTGGTTTCTTTCGCTTTATCCAGCGCGTTAACCACGTTCTGTGCCGACTTT'
-symbol = 'CC'
+#Genome ='AGCGTGCCGAAATATGCCGCCAGACCTGCTGCGGTGGCCTCGCCGACTTCACGGATGCCAAGTGCATAGAGGAAGCGAGCAAAGGTGGTTTCTTTCGCTTTATCCAGCGCGTTAACCACGTTCTGTGCCGACTTT'
+#symbol = 'CC'
 #print(SymbolArray(Genome,symbol))
-print(FasterSymbolArray(Genome, symbol))
+#print(FasterSymbolArray('AAAAGGGG', 'A'))
+#print(FasterSymbolArray(Genome, symbol))
+
+
+#20180510 thu
+print('Hello world')
+#print(len(split('0 -1 -1 -1 0 1 2 1 1 1 0 1 2 1 0 0 0 0 -1 0 -1 -2')))
+
+a=('0 -1 -1 -1 0 1 2 1 1 1 0 1 2 1 0 0 0 0 -1 0 -1 -2')
+b=a.split()
+c = len(b)
+print(c)
+
+Genome = 'CATGGGCATCGGCCATACGCC'
+#0 -1 -1 -1 0 1 2 1 1 1 0 1 2 1 0 0 0 0 -1 0 -1 -2
+def SkewArray(Genome):
+    # your code here
+    skew =[0]
+    l = len(Genome)
+    for i in range(0,l):
+        if Genome[i] == 'A'or'B':
+            skew[i+1] = skew[i]
+        if Genome[i] == 'G':
+            skew[i+1] = skew[i] + 1
+        if Genome[i] == 'C':
+            skew[i+1] = skew[i-1] -1
+    return skew
+
+#skew=[0]
+#skew[0]= 33
+#print(skew)
+print(len(Genome))
+print(range(0,21))
+print(SkewArray(Genome))
