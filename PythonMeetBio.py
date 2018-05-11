@@ -213,22 +213,18 @@ print(c)
 
 Genome = 'CATGGGCATCGGCCATACGCC'
 #0 -1 -1 -1 0 1 2 1 1 1 0 1 2 1 0 0 0 0 -1 0 -1 -2
-def SkewArray(Genome):
+def SkewArray1(Genome):
     # your code here
     skew =[0]
     l = len(Genome)
-    for i in range(0,l):
-        if Genome[i] == 'A'or'B':
-            skew[i+1] = skew[i]
-        if Genome[i] == 'G':
-            skew[i+1] = skew[i] + 1
+    for i in range(0, 4):
+        print(Genome[i])
         if Genome[i] == 'C':
-            skew[i+1] = skew[i-1] -1
+            skew.append(skew[i-1]-1)
+            print(skew)
+        elif Genome[i] == 'A'or'T':
+            skew.append(skew[i])
+            print(skew)
+        else:
+            skew.append(1)
     return skew
-
-#skew=[0]
-#skew[0]= 33
-#print(skew)
-print(len(Genome))
-print(range(0,21))
-print(SkewArray(Genome))
