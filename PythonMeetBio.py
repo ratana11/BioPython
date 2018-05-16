@@ -228,3 +228,32 @@ def SkewArray1(Genome):
         else:
             skew.append(1)
     return skew
+
+#20180516 wed
+# Input:  A DNA string Genome
+# Output: A list containing all integers i minimizing Skew(Prefix_i(Text)) over all values of i (from 0 to |Genome|)
+def MinimumSkew(Genome):
+    positions = []
+    SkewVariable = SkewArray(Genome)
+    #find the minimum value of all values in the skew array
+    minNumber = min(SkewVariable.values())
+    #ragne over the length of the skew array and add all positions achieving the min to positions
+    for i in SkewVariable:
+        if SkewVariable[i] == minNumber:
+            positions.append(i)
+
+    return positions
+
+# Input:  A String Genome
+# Output: SkewArray(Genome)
+# HINT:   This code should be taken from the last Code Challenge.
+def SkewArray(Genome):
+    Skew={0:0}
+    for i in range(1,len(Genome)+1):
+        if Genome[i-1] == "C":
+            Skew[i] = Skew[i-1]-1
+        elif Genome[i-1] == "G":
+            Skew[i] = Skew[i-1]+1
+        else:
+            Skew[i] = Skew[i-1]
+    return(Skew) 
