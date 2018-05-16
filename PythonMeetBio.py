@@ -206,27 +206,30 @@ def FasterSymbolArray(Genome, symbol):
 print('Hello world')
 #print(len(split('0 -1 -1 -1 0 1 2 1 1 1 0 1 2 1 0 0 0 0 -1 0 -1 -2')))
 
-a=('0 -1 -1 -1 0 1 2 1 1 1 0 1 2 1 0 0 0 0 -1 0 -1 -2')
-b=a.split()
-c = len(b)
-print(c)
-
-Genome = 'CATGGGCATCGGCCATACGCC'
-#0 -1 -1 -1 0 1 2 1 1 1 0 1 2 1 0 0 0 0 -1 0 -1 -2
-def SkewArray1(Genome):
-    # your code here
-    skew =[0]
-    l = len(Genome)
-    for i in range(0, 4):
-        print(Genome[i])
-        if Genome[i] == 'C':
-            skew.append(skew[i-1]-1)
-            print(skew)
-        elif Genome[i] == 'A'or'T':
-            skew.append(skew[i])
-            print(skew)
+def SkewArray(Genome):
+    Skew=[0]
+    for i in range(1,len(Genome)+1):
+        if Genome[i-1] == "C":
+            Skew.append(Skew[i-1]-1)
+        elif Genome[i-1] == "G":
+            Skew.append(Skew[i-1]+1)
         else:
-            skew.append(1)
+            Skew.append(Skew[i-1])
+    return(Skew)
+#20180512 sat
+# Input:  A DNA string Genome
+# Output: A list containing all integers i minimizing Skew(Prefix_i(Text)) over all values of i (from 0 to |Genome|)
+def MinimumSkew(Genome):
+    positions = [] # output variable
+    # your code here
+    return positions
+
+# Input:  A String Genome
+# Output: SkewArray(Genome)
+# HINT:   This code should be taken from the last Code Challenge.
+def SkewArray(Genome):
+    skew = {} # output variable
+    # your code here
     return skew
 
 #20180516 wed
