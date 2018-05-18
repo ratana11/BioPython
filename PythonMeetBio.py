@@ -264,25 +264,29 @@ def SkewArray(Genome):
 # Output: An integer value representing the Hamming Distance between p and q.
 def HammingDistance(p, q):
     # your code here
-    num = 0
-    l = len(p)
-    for i in range(l):
+    count = 0
+    for i in range(0,len(p)):
         if p[i] != q[i]:
-            num += 1
-    return num
+            count += 1
+    return count
 
 # Input:  Strings Pattern and Text along with an integer d
 # Output: A list containing all starting positions where Pattern appears
 # as a substring of Text with at most d mismatches
+# Pattern ='ATTCTGGA'
+# Text ='CGCCCGAATCCAGAACGCATTCCCATATTTCGGGACCACTGGCCTCCACGGTACGGACGTCAATCAAAT'
+# d=3
+# [6, 7, 26, 27]
 def ApproximatePatternMatching(Text, Pattern, d):
     positions = [] # initializing list of positions
     # your code here
     n = len(Text)
     m = len(Pattern)
     for i in range(0,n-m+1):
-        if HammingDistance (Pattern[i:i+n],Text) <= d:
+        if HammingDistance (Pattern, Text[i:i+m]) <= d:
             positions.append(i)
     return positions
+
 
 def HammingDistance(p, q):
     # your code here
@@ -291,4 +295,15 @@ def HammingDistance(p, q):
         if p[i] != q[i]:
             count += 1
     return count
+
+#20180518 fri
 # Insert your Hamming distance function on the following line.
+def ApproximatePatternCount(Pattern, Text, d):
+    count = 0 # initialize count variable
+    # your code here
+    positions = ApproximatePatternMatching(Text, Pattern, d)
+    count = len(positions)
+    return count
+
+# def ApproximatePatternCount(Pattern, Text, d):
+#     return len(ApproximatePatternMatching(Text, Pattern, d))
