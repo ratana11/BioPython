@@ -326,9 +326,49 @@ def Count(Motifs):
     return count
 # Input:  A list of kmers Motifs
 # Output: the profile matrix of Motifs, as a dictionary of lists.
+#20180524 thu
 def Profile(Motifs):
     t = len(Motifs)
     k = len(Motifs[0])
     profile = {}
-    # insert your code here
+    profile = Count(Motifs)
+    for i in profile.keys():
+        k = profile[i]
+        profile[i] = list(map(lambda a: a/t, k))
     return profile
+# Insert your Count(Motifs) function here.
+# Input:  A set of kmers Motifs
+# Output: A consensus string of Motifs.
+def Consensus(Motifs):
+    k = len(Motifs[0])
+    count = Count(Motifs)
+    consensus = ""
+    for j in range(k):
+        m = 0
+        frequentSymbol = ""
+        for symbol in "ACGT":
+            if count[symbol][j] > m:
+                m = count[symbol][j]
+                frequentSymbol = symbol
+        consensus += frequentSymbol
+    return consensus
+def Score(Motifs):
+    k = len(Motifs[0])
+    t = len(Motifs)
+    score = 0
+    consensus = Consensus(Motifs)
+    for i in range(t):
+        for j in range(k):
+            if consensus[j] != Motifs[i][j]:
+                score += 1
+    return score
+#20180525
+#1.4 Greedy Motif Search
+# Input:  String Text and profile matrix Profile
+# Output: Pr(Text, Profile)
+def Pr(Text, Profile):
+    p =1
+    k = len(Text)
+    for i in range(k):
+        p = Profile[Text[i]][i]*p
+    return p
