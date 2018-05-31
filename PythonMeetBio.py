@@ -310,8 +310,7 @@ def ApproximatePatternCount(Pattern, Text, d):
 
 #20180523
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"Motifs.py"
-# Input:  A set of kmers Motifs
-# Output: Count(Motifs)
+
 def Count(Motifs):
     count = {} # initializing the count dictionary
     k = len(Motifs[0])
@@ -436,3 +435,29 @@ Motifs = GreedyMotifSearch(Dna, k, t)
 print(Motifs)
 # Print Score(Motifs)
 print(Score(Motifs))
+
+###week4 Which DNA Patterns Play The Role of Molecular Clocks? (Part 2)
+#20180531 thu
+#Motifs = ['AACGTA','CCCGTT','CACCTT','GGATTA','TTCCGG']
+def CountWithPseudocounts(Motifs):
+    count = {} # initializing the count dictionary
+    k = len(Motifs[0])
+    t = len(Motifs)
+    for symbol in "ACGT":
+        count[symbol] = []
+        for j in range(k):
+             count[symbol].append(1)
+    for i in range(t):
+        for j in range(k):
+            symbol = Motifs[i][j]
+            count[symbol][j] += 1
+    return count
+def ProfileWithPseudocounts(Motifs):
+    t = len(Motifs)
+    k = len(Motifs[0])
+    profile = CountWithPseudocounts(Motifs)
+    print(profile)
+    for i in profile.keys():
+        val = profile[i]
+        profile[i] = list(map(lambda a: a/k, val))
+    return profile
