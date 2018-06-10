@@ -490,10 +490,93 @@ import random
 # Input:  A list of strings Dna, and integers k and t
 # Output: RandomMotifs(Dna, k, t)
 # HINT:   You might not actually need to use t since t = len(Dna), but you may find it convenient
-def RandomMotifs(Dna, k, t):
-    RandomMotifs =[]
-    p = random.randint(1,t)
-    ln = len(Dna)
-    for i in range(ln):
-        RandomMotifs.append(Dna[i][p:p+k])
-    return RandomMotifs
+def RandomMotifs(Dna, k, t): #from solution
+    Motifs = []
+    for i in range(t):
+        ind = random.randint(0, len(Dna[0])-k)
+        motif = Dna[i][ind:ind+k]
+        Motifs.append(motif)
+    return Motifs
+
+
+def RandomizedMotifSearch(Dna, k, t):
+    M = RandomMotifs(Dna, k, t)
+    BestMotifs = M
+ while True:
+        Profile = ProfileWithPseudocounts(M)
+        M = Motifs(Profile, Dna)
+        if Score(M) < Score(BestMotifs):
+            BestMotifs = M
+        else:
+            return BestMotifs
+# Copy the ten strings occurring in the hyperlinked DosR dataset below.
+
+# Dna = [
+# 'GCGCCCCGCCCGGACAGCCATGCGCTAACCCTGGCTTCGATGGCGCCGGCTCAGTTAGGGCCGGAAGTCCCCAATGTGGCAGACCTTTCGCCCCTGGCGGACGAATGACCCCAGTGGCCGGGACTTCAGGCCCTATCGGAGGGCTCCGGCGCGGTGGTCGGATTTGTCTGTGGAGGTTACACCCCAATCGCAAGGATGCATTATGACCAGCGAGCTGAGCCTGGTCGCCACTGGAAAGGGGAGCAACATC',
+# 'CCGATCGGCATCACTATCGGTCCTGCGGCCGCCCATAGCGCTATATCCGGCTGGTGAAATCAATTGACAACCTTCGACTTTGAGGTGGCCTACGGCGAGGACAAGCCAGGCAAGCCAGCTGCCTCAACGCGCGCCAGTACGGGTCCATCGACCCGCGGCCCACGGGTCAAACGACCCTAGTGTTCGCTACGACGTGGTCGTACCTTCGGCAGCAGATCAGCAATAGCACCCCGACTCGAGGAGGATCCCG',
+# 'ACCGTCGATGTGCCCGGTCGCGCCGCGTCCACCTCGGTCATCGACCCCACGATGAGGACGCCATCGGCCGCGACCAAGCCCCGTGAAACTCTGACGGCGTGCTGGCCGGGCTGCGGCACCTGATCACCTTAGGGCACTTGGGCCACCACAACGGGCCGCCGGTCTCGACAGTGGCCACCACCACACAGGTGACTTCCGGCGGGACGTAAGTCCCTAACGCGTCGTTCCGCACGCGGTTAGCTTTGCTGCC',
+# 'GGGTCAGGTATATTTATCGCACACTTGGGCACATGACACACAAGCGCCAGAATCCCGGACCGAACCGAGCACCGTGGGTGGGCAGCCTCCATACAGCGATGACCTGATCGATCATCGGCCAGGGCGCCGGGCTTCCAACCGTGGCCGTCTCAGTACCCAGCCTCATTGACCCTTCGACGCATCCACTGCGCGTAAGTCGGCTCAACCCTTTCAAACCGCTGGATTACCGACCGCAGAAAGGGGGCAGGAC',
+# 'GTAGGTCAAACCGGGTGTACATACCCGCTCAATCGCCCAGCACTTCGGGCAGATCACCGGGTTTCCCCGGTATCACCAATACTGCCACCAAACACAGCAGGCGGGAAGGGGCGAAAGTCCCTTATCCGACAATAAAACTTCGCTTGTTCGACGCCCGGTTCACCCGATATGCACGGCGCCCAGCCATTCGTGACCGACGTCCCCAGCCCCAAGGCCGAACGACCCTAGGAGCCACGAGCAATTCACAGCG',
+# 'CCGCTGGCGACGCTGTTCGCCGGCAGCGTGCGTGACGACTTCGAGCTGCCCGACTACACCTGGTGACCACCGCCGACGGGCACCTCTCCGCCAGGTAGGCACGGTTTGTCGCCGGCAATGTGACCTTTGGGCGCGGTCTTGAGGACCTTCGGCCCCACCCACGAGGCCGCCGCCGGCCGATCGTATGACGTGCAATGTACGCCATAGGGTGCGTGTTACGGCGATTACCTGAAGGCGGCGGTGGTCCGGA',
+# 'GGCCAACTGCACCGCGCTCTTGATGACATCGGTGGTCACCATGGTGTCCGGCATGATCAACCTCCGCTGTTCGATATCACCCCGATCTTTCTGAACGGCGGTTGGCAGACAACAGGGTCAATGGTCCCCAAGTGGATCACCGACGGGCGCGGACAAATGGCCCGCGCTTCGGGGACTTCTGTCCCTAGCCCTGGCCACGATGGGCTGGTCGGATCAAAGGCATCCGTTTCCATCGATTAGGAGGCATCAA',
+# 'GTACATGTCCAGAGCGAGCCTCAGCTTCTGCGCAGCGACGGAAACTGCCACACTCAAAGCCTACTGGGCGCACGTGTGGCAACGAGTCGATCCACACGAAATGCCGCCGTTGGGCCGCGGACTAGCCGAATTTTCCGGGTGGTGACACAGCCCACATTTGGCATGGGACTTTCGGCCCTGTCCGCGTCCGTGTCGGCCAGACAAGCTTTGGGCATTGGCCACAATCGGGCCACAATCGAAAGCCGAGCAG',
+# 'GGCAGCTGTCGGCAACTGTAAGCCATTTCTGGGACTTTGCTGTGAAAAGCTGGGCGATGGTTGTGGACCTGGACGAGCCACCCGTGCGATAGGTGAGATTCATTCTCGCCCTGACGGGTTGCGTCTGTCATCGGTCGATAAGGACTAACGGCCCTCAGGTGGGGACCAACGCCCCTGGGAGATAGCGGTCCCCGCCAGTAACGTACCGCTGAACCGACGGGATGTATCCGCCCCAGCGAAGGAGACGGCG',
+# 'TCAGCACCATGACCGCCTGGCCACCAATCGCCCGTAACAAGCGGGACGTCCGCGACGACGCGTGCGCTAGCGCCGTGGCGGTGACAACGACCAGATATGGTCCGAGCACGCGGGCGAACCTCGTGTTCTGGCCTCGGCCAGTTGTGTAGAGCTCATCGCTGTCATCGAGCGATATCCGACCACTGATCCAAGTCGGGGGCTCTGGGGACCGAAGTCCCCGGGCTCGGAGCTATCGGACCTCACGATCACC'
+# ]
+#
+# # set t equal to the number of strings in Dna, k equal to 15, and N equal to 100.
+# t = len(Dna)
+# k =15
+# N =100
+# # Call RandomizedMotifSearch(Dna, k, t) N times, storing the best-scoring set of motifs
+# # resulting from this algorithm in a variable called BestMotifs
+# BestMotifs = RandomizedMotifSearch(Dna, k, t)
+# for i in range(N-1):
+#     M = RandomizedMotifSearch(Dna,k,t)
+#     if Score(BestMotifs)>Score(M):
+#         BestMotifs = M
+# # Print the BestMotifs variable
+# print(BestMotifs)
+# # Print Score(BestMotifs)
+# print(Score(BestMotifs))
+#20180610 sun
+#1.4 Gibbs Sampling
+# Input: A dictionary Probabilities, where keys are k-mers and values are the probabilities of these k-mers (which do not necessarily sum up to 1)
+# Output: A normalized dictionary where the probability of each k-mer was divided by the sum of all k-mers' probabilities
+def Normalize(Probabilities):
+    sumPr = sum(Probabilities.values())
+    dickey=Probabilities.keys()
+    for i in dickey:
+        Probabilities[i] /= sumPr
+    return Probabilities
+
+def WeightedDie(probs):
+  kmer = ''
+  rand = random.uniform(0,1)
+  probs = Normalize(probs)
+  distance = 0
+  prev_distance = 0
+  for k in probs:
+    distance += probs[k]
+    if rand < distance and rand > prev_distance:
+      kmer = k
+    prev_distance = distance
+  return kmer
+
+def WeightedDie(Probabilities):
+    random_float = random.uniform(0,1)
+    input_keys = []
+    input_values = []
+    for key, value in sorted(Probabilities.items()):
+        input_keys.append(key)
+        input_values.append(value)
+
+    current = 0
+    range_of_values = []
+    for i, value in enumerate(input_values):
+        current += value
+        range_of_values.append(current)
+
+    for i, value in enumerate(range_of_values):
+        if value >= random_float:
+            return(input_keys[i])
