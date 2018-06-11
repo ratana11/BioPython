@@ -502,7 +502,7 @@ def RandomMotifs(Dna, k, t): #from solution
 def RandomizedMotifSearch(Dna, k, t):
     M = RandomMotifs(Dna, k, t)
     BestMotifs = M
- while True:
+     while True:
         Profile = ProfileWithPseudocounts(M)
         M = Motifs(Profile, Dna)
         if Score(M) < Score(BestMotifs):
@@ -549,20 +549,7 @@ def Normalize(Probabilities):
     for i in dickey:
         Probabilities[i] /= sumPr
     return Probabilities
-
-def WeightedDie(probs):
-  kmer = ''
-  rand = random.uniform(0,1)
-  probs = Normalize(probs)
-  distance = 0
-  prev_distance = 0
-  for k in probs:
-    distance += probs[k]
-    if rand < distance and rand > prev_distance:
-      kmer = k
-    prev_distance = distance
-  return kmer
-
+#20180610
 def WeightedDie(Probabilities):
     random_float = random.uniform(0,1)
     input_keys = []
@@ -580,3 +567,67 @@ def WeightedDie(Probabilities):
     for i, value in enumerate(range_of_values):
         if value >= random_float:
             return(input_keys[i])
+# Input:  A string Text, a profile matrix Profile, and an integer k
+# Output: ProfileGeneratedString(Text, profile, k)
+def ProfileGeneratedString(Text, profile, k):
+    n = len(Text)
+    probabilities = {}
+    for i in range(0,n-k+1):
+        probabilities[Text[i:i+k]] = Pr(Text[i:i+k], profile)
+    probabilities = Normalize(probabilities)
+    return WeightedDie(probabilities)
+
+def GibbsSampler(Dna, k, t, N):
+    Motifs = RandomMotifs(Dna, k, t)
+    BestMotifs = RandomizedMotifSearch(Dna,k,t)
+    for j in range(N-1):
+        i = random.randint(0,t-1)
+        Profile = ProfileWithPseudocounts(Motifs)
+        #Motifi = ProfileGeneratedString(Dna, Profile, i)
+        if Score(Motifs) < Score(BestMotifs):
+            BestMotifs = Motifs
+        return BestMotifs
+def GibbsSampler(Dna, k, t, N):
+    BestMotifs = [] # output variable
+    #randomly select k-mers Motifs = (Motif1, …, Motift) in each string from Dna
+    Motifs = RandomMotifs(Dna, k, t)
+    #BestMotifs ← Motifs
+    BestMotifs = Motifs.copy()
+    #for j ← 1 to N
+    for j in range(N):
+    #    i ← randomly generated integer between 1 and t
+        i = random.randint(0,t-1)
+    #    Profile ← profile matrix formed from all strings in Motifs except for Motifi
+        Profile = ProfileWithPseudocounts(Motifs[0:i] + Motifs[i+1:])
+    #    Motifi ← Profile-randomly generated k-mer in the i-th string
+        Motifs[i] = ProfileGeneratedString(Dna[i], Profile, k)
+    #if Score(Motifs) < Score(BestMotifs)
+        if Score(Motifs) < Score(BestMotifs):
+    #    BestMotifs ← Motifs
+            BestMotifs = Motifs
+    return BestMotifs
+Dna=['GCGCCCCGCCCGGACAGCCATGCGCTAACCCTGGCTTCGATGGCGCCGGCTCAGTTAGGGCCGGAAGTCCCCAATGTGGCAGACCTTTCGCCCCTGGCGGACGAATGACCCCAGTGGCCGGGACTTCAGGCCCTATCGGAGGGCTCCGGCGCGGTGGTCGGATTTGTCTGTGGAGGTTACACCCCAATCGCAAGGATGCATTATGACCAGCGAGCTGAGCCTGGTCGCCACTGGAAAGGGGAGCAACATC',
+'CCGATCGGCATCACTATCGGTCCTGCGGCCGCCCATAGCGCTATATCCGGCTGGTGAAATCAATTGACAACCTTCGACTTTGAGGTGGCCTACGGCGAGGACAAGCCAGGCAAGCCAGCTGCCTCAACGCGCGCCAGTACGGGTCCATCGACCCGCGGCCCACGGGTCAAACGACCCTAGTGTTCGCTACGACGTGGTCGTACCTTCGGCAGCAGATCAGCAATAGCACCCCGACTCGAGGAGGATCCCG',
+'ACCGTCGATGTGCCCGGTCGCGCCGCGTCCACCTCGGTCATCGACCCCACGATGAGGACGCCATCGGCCGCGACCAAGCCCCGTGAAACTCTGACGGCGTGCTGGCCGGGCTGCGGCACCTGATCACCTTAGGGCACTTGGGCCACCACAACGGGCCGCCGGTCTCGACAGTGGCCACCACCACACAGGTGACTTCCGGCGGGACGTAAGTCCCTAACGCGTCGTTCCGCACGCGGTTAGCTTTGCTGCC',
+'GGGTCAGGTATATTTATCGCACACTTGGGCACATGACACACAAGCGCCAGAATCCCGGACCGAACCGAGCACCGTGGGTGGGCAGCCTCCATACAGCGATGACCTGATCGATCATCGGCCAGGGCGCCGGGCTTCCAACCGTGGCCGTCTCAGTACCCAGCCTCATTGACCCTTCGACGCATCCACTGCGCGTAAGTCGGCTCAACCCTTTCAAACCGCTGGATTACCGACCGCAGAAAGGGGGCAGGAC',
+'GTAGGTCAAACCGGGTGTACATACCCGCTCAATCGCCCAGCACTTCGGGCAGATCACCGGGTTTCCCCGGTATCACCAATACTGCCACCAAACACAGCAGGCGGGAAGGGGCGAAAGTCCCTTATCCGACAATAAAACTTCGCTTGTTCGACGCCCGGTTCACCCGATATGCACGGCGCCCAGCCATTCGTGACCGACGTCCCCAGCCCCAAGGCCGAACGACCCTAGGAGCCACGAGCAATTCACAGCG',
+'CCGCTGGCGACGCTGTTCGCCGGCAGCGTGCGTGACGACTTCGAGCTGCCCGACTACACCTGGTGACCACCGCCGACGGGCACCTCTCCGCCAGGTAGGCACGGTTTGTCGCCGGCAATGTGACCTTTGGGCGCGGTCTTGAGGACCTTCGGCCCCACCCACGAGGCCGCCGCCGGCCGATCGTATGACGTGCAATGTACGCCATAGGGTGCGTGTTACGGCGATTACCTGAAGGCGGCGGTGGTCCGGA',
+'GGCCAACTGCACCGCGCTCTTGATGACATCGGTGGTCACCATGGTGTCCGGCATGATCAACCTCCGCTGTTCGATATCACCCCGATCTTTCTGAACGGCGGTTGGCAGACAACAGGGTCAATGGTCCCCAAGTGGATCACCGACGGGCGCGGACAAATGGCCCGCGCTTCGGGGACTTCTGTCCCTAGCCCTGGCCACGATGGGCTGGTCGGATCAAAGGCATCCGTTTCCATCGATTAGGAGGCATCAA',
+'GTACATGTCCAGAGCGAGCCTCAGCTTCTGCGCAGCGACGGAAACTGCCACACTCAAAGCCTACTGGGCGCACGTGTGGCAACGAGTCGATCCACACGAAATGCCGCCGTTGGGCCGCGGACTAGCCGAATTTTCCGGGTGGTGACACAGCCCACATTTGGCATGGGACTTTCGGCCCTGTCCGCGTCCGTGTCGGCCAGACAAGCTTTGGGCATTGGCCACAATCGGGCCACAATCGAAAGCCGAGCAG',
+'GGCAGCTGTCGGCAACTGTAAGCCATTTCTGGGACTTTGCTGTGAAAAGCTGGGCGATGGTTGTGGACCTGGACGAGCCACCCGTGCGATAGGTGAGATTCATTCTCGCCCTGACGGGTTGCGTCTGTCATCGGTCGATAAGGACTAACGGCCCTCAGGTGGGGACCAACGCCCCTGGGAGATAGCGGTCCCCGCCAGTAACGTACCGCTGAACCGACGGGATGTATCCGCCCCAGCGAAGGAGACGGCG',
+'TCAGCACCATGACCGCCTGGCCACCAATCGCCCGTAACAAGCGGGACGTCCGCGACGACGCGTGCGCTAGCGCCGTGGCGGTGACAACGACCAGATATGGTCCGAGCACGCGGGCGAACCTCGTGTTCTGGCCTCGGCCAGTTGTGTAGAGCTCATCGCTGTCATCGAGCGATATCCGACCACTGATCCAAGTCGGGGGCTCTGGGGACCGAAGTCCCCGGGCTCGGAGCTATCGGACCTCACGATCACC']
+
+# set t equal to the number of strings in Dna, k equal to 15, and N equal to 100
+t = len(Dna)
+k=15
+N=100
+# Call GibbsSampler(Dna, k, t, N) 20 times and store the best output in a variable called BestMotifs
+BestMotifs = GibbsSampler(Dna, k, t, N)
+for i in range(20):
+    B = GibbsSampler(Dna, k, t, N)
+    if Score(BestMotifs) < Score(B):
+        BestMotifs = B
+# Print the BestMotifs variable
+print(BestMotifs)
+# Print Score(BestMotifs)
+print(Score(BestMotifs))
