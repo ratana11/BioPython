@@ -632,10 +632,10 @@ print(BestMotifs)
 # Print Score(BestMotifs)
 print(Score(BestMotifs))
 
-
-#https://www.coursera.org/specializations/bioinform
 #COURSE1 Finding Hidden Messages in DNA (Bioinformatics I)
-#20180612 tue Where in the Genome Does DNA Replication Begin?
+#https://www.coursera.org/specializations/bioinform
+#20180612 tue Where in the Genome Does DNA Replication Begin
+#1.2 Hidden Messages in the Replication Origin
 Text ='CGATGTGCGACGGAGCGACGGGGGAGATTCGCGACGGAGCGACGGGCGACGGGCGACGGTGCGACGGCCGCGACGGGCGACGGCCGCGACGGGAATGCGACGGAGCGACGGGCGCGACGGAGCGACGGCCGCGACGGGCGCGACGGAGCGACGGGTGCAGCGGCCGGCGACGGGCGACGGGCGCGACGGAGCGACGGCGCGACGGAGCGACGGGCGACGGGCGACGGCTGGCGACGGTGCGACGGCTTGGGCGACGGTGGCGACGGCGCGACGGCTGCGACGGCGCGACGGGAGCGACGGGCGACGGTTGCGACGGGGGCGACGGCGCGACGGCCAGCGTACGCGCGACGGCCGCGACGGGCGACGGGCGACGGGAGCGACGGATGCGACGGCGCGACGGGCGACGGTCGCGACGGTTCTGCGACGGCCGCGACGGCGCGACGGTGCGACGGGCGACGGACGGCGACGGGCGACGGCGCGACGGTTGCGACGGGGCGACGGGCGACGGTGCGACGGGTGCGACGGCGTCGCGACGGTACAGCGACGGCGGCGACGGGTCTCGCGACGGGCCGCGACGGCGTCTCAGTTTGCTAGCGCGACGGCCGTCTGCGACGGTATGGCGACGGGTGCGACGGGCGCGACGGGGATGCGACGGGCGACGGGCGACGGGCGTATGCGACGGAGCGACGGGCGACGGAGGCGACGGGCGACGGATGCGACGGGCGACGGGGAAGGGTGAAACCTGTAACGCGACGGTGCGACGGGCGACGGGAGCGACGGATGGCGACGGAGCGACGGCGCGACGGTGAAACGCGACGGGCGACGGGCGACGGGGCCCGCGACGGGCGACGGTTAGCGACGGATGCGACGGAGCGACGGATCGTGCGACGGATGCGACGGATGCGACGGCCACTGCGACGGGTGCGACGGCTGGCGACGGCGCGACGGCAGTGCGACGG'
 Pattern ='GCGACGGGC'
 def PatternCount(Text, Pattern):
@@ -646,3 +646,42 @@ def PatternCount(Text, Pattern):
         if Text[i:i+P] == Pattern:
             count += 1
     return count
+def FrequentWords(Text, k):
+    FrequentPatterns = []
+    Count = []
+    for i in range(len(Text)-k+1):
+        Pattern = Text[i:i+k]
+        Count.append(PatternCount(Text, Pattern))
+    maxCount = max(Count)
+    for i in range(len(Text)-k+1):
+        if Count[i] == maxCount:
+            FrequentPatterns.append(Text[i:i+k])
+    FrequentPatterns =list(set(FrequentPatterns))
+    return FrequentPatterns
+#1.3 Some Hidden Messages are More Surprising than Others
+def ReverseComplement(Pattern):
+    PatternCom=[]
+    for i in range(len(Pattern)):
+        if Pattern[i] == "A":
+            PatternCom.append('T')
+        elif Pattern[i] == "T":
+            PatternCom.append('A')
+        elif Pattern[i] == "C":
+            PatternCom.append('G')
+        elif Pattern[i] == "G":
+            PatternCom.append('C')
+    PatternCom.reverse()
+    PatternCom = ''.join(PatternCom)
+    print(type(PatternCom))
+    return PatternCom
+def PatternMatching(Pattern, Genome):  #20180619
+    positions = []  # output variable
+    # your code here
+    Patternle = len(Pattern)
+    Genomele = len(Genome)
+    for i in range(Genomele):
+        if Pattern == Genome[i:i+Patternle]:
+            positions.append(i)
+    positions = ' '.join(str(e) for e in positions)
+    return positions
+#1.4 An Explosion of Hidden Messages
