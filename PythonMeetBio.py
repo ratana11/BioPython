@@ -685,3 +685,68 @@ def PatternMatching(Pattern, Genome):  #20180619
     positions = ' '.join(str(e) for e in positions)
     return positions
 #1.4 An Explosion of Hidden Messages
+
+#1.6 CS: Converting Patterns to Numbers and Vice-Versa
+def PatternToNumber(Pattern):
+    prefix = ''
+    if Pattern == '':
+        return 0
+    symbol = Lastsymbol(Pattern)
+    prefix = (Prefix(Pattern))
+    return 4 * PatternToNumber(prefix) + SymbolToNumber(symbol)
+
+def Lastsymbol(Pattern):
+    return Pattern[-1]
+
+def Prefix(Pattern):
+    return Pattern[:len(Pattern)-1]
+
+def SymbolToNumber(symbol):
+    if symbol == "A":
+        return 0
+    elif symbol == "C":
+        return 1
+    elif symbol == "G":
+        return 2
+    else:
+        return 3
+
+def NumberToPattern(index, k):
+    if k == 1:
+        return NumberToSymbol(index)
+    prefixIndex = Quotient(index, 4)
+    r = Remainder(index, 4)
+    symbol = NumberToSymbol(r)
+    PrefixPattern = NumberToPattern(prefixIndex, k-1)
+    return PrefixPattern + symbol
+def reverse(text):
+    result = ''
+    count = len(text) -1
+    for x in text:
+        result += text[count]
+        count -=1
+    return result
+def NumberToSymbol(r):
+    if r == 0:
+        return "A"
+    elif r == 1:
+        return "C"
+    elif r == 2:
+        return "G"
+    else:
+        return "T"
+def Remainder(num, n):
+    return int(num)%n
+def Quotient(num, n):
+    return int(num)//n
+
+
+def numberToSymbol(n):
+    tableDict = "ACGT"
+    return tableDict[n]
+def NumberToPattern(index,k):
+    remainder = index % 4
+    quotient = index//4
+    if k == 0:
+        return ""
+    return NumberToPattern(quotient, k-1) + numberToSymbol(remainder)
