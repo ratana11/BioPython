@@ -298,7 +298,7 @@ def HammingDistance(p, q):
 
 #20180518 fri
 # Insert your Hamming distance function on the following line.
-def ApproximatePatternCount(Pattern, Text, d):
+def ApproximatePatternCount(Text, Pattern, d):
     count = 0 # initialize count variable
     # your code here
     positions = ApproximatePatternMatching(Text, Pattern, d)
@@ -632,7 +632,7 @@ print(BestMotifs)
 # Print Score(BestMotifs)
 print(Score(BestMotifs))
 
-#COURSE1 Finding Hidden Messages in DNA (Bioinformatics I)
+##############COURSE1 Finding Hidden Messages in DNA (Bioinformatics I)
 #https://www.coursera.org/specializations/bioinform
 #20180612 tue Where in the Genome Does DNA Replication Begin
 #1.2 Hidden Messages in the Replication Origin
@@ -685,6 +685,44 @@ def PatternMatching(Pattern, Genome):  #20180619
     positions = ' '.join(str(e) for e in positions)
     return positions
 #1.4 An Explosion of Hidden Messages
+#1.5 CS: The Frequency Array
+#20180702 mon
+def ComputingFrequencies(Text, k):
+    FrequencyArray =[]
+    for i in range(4**k):
+        FrequencyArray.append(0)
+    for i in range(len(Text)-k+1):
+        Pattern = Text[i:i+k]
+        j = PatternToNumber(Pattern)
+        FrequencyArray[j] = FrequencyArray[j]+1
+    return FrequencyArray
+
+def PatternToNumber(Pattern):
+    prefix = ''
+    if Pattern == '':
+        return 0
+    symbol = Lastsymbol(Pattern)
+    prefix = (Prefix(Pattern))
+    return 4 * PatternToNumber(prefix) + SymbolToNumber(symbol)
+
+def Lastsymbol(Pattern):
+    return Pattern[-1]
+
+def Prefix(Pattern):
+    return Pattern[:len(Pattern)-1]
+
+def SymbolToNumber(symbol):
+    if symbol == "A":
+        return 0
+    elif symbol == "C":
+        return 1
+    elif symbol == "G":
+        return 2
+    else:
+        return 3
+tt=ComputingFrequencies(Text,k)
+str1 = ' '.join(str(e) for e in tt)
+str1
 
 #1.6 CS: Converting Patterns to Numbers and Vice-Versa
 def PatternToNumber(Pattern):
@@ -740,7 +778,7 @@ def Remainder(num, n):
 def Quotient(num, n):
     return int(num)//n
 
-
+### from solution
 def numberToSymbol(n):
     tableDict = "ACGT"
     return tableDict[n]
@@ -750,3 +788,4 @@ def NumberToPattern(index,k):
     if k == 0:
         return ""
     return NumberToPattern(quotient, k-1) + numberToSymbol(remainder)
+###COURSE1 Finding Hidden Messages in DNA (Bioinformatics I)/ Week2 :Finding Replication Origins
