@@ -789,3 +789,57 @@ def NumberToPattern(index,k):
         return ""
     return NumberToPattern(quotient, k-1) + numberToSymbol(remainder)
 ###COURSE1 Finding Hidden Messages in DNA (Bioinformatics I)/ Week2 :Finding Replication Origins
+
+#Course : Python for Genomic Data Science
+#week1
+#Lecture 2.2 - First Steps Toward Programming Part 2
+#20180716
+dna='ATTCTGGA'
+dna.count('C') #the .[dot]operator can be interpreted as:"ask object dna to do something"
+dna.lower()
+help(str)
+dna.replace('A','a')
+#Lecture 2.3 - First Steps Toward Programming Part 3 (8:57)
+#So if you put this special path name as the very first line of your file, 
+#which is #!/users/bin/python which is the path to python on my computer
+#And the reason I put ./gcpy was I was telling the UNIX command line to look in the directory I am in right now which is where this file is
+
+#Lecture 2.4 - First Steps Toward Programming Part 4 (9:58)
+dna = input("Enter a DNA sequecne, please: ")
+int(x,[,base]) #converts x to an integer
+float(x) #converts x to a floating-point(real) numberToSymbol
+complex(real,[,imag]) #creates a complex number
+str(x) #converts x to a strings
+chr(x) #converts an integer to a characterㅡ
+#week2, module2, Lecture 3.1: Data Structures Part 1 (11:58)
+
+#20180723
+# COURSERA : Finding Hidden Messages in DNA (Bioinformatics I)
+# Week 2: Finding Replication Origins
+# 1.4 Some Hidden Messages are More Elusive than OthersFrequent Words with Mismatches and Reverse Complements Problem:
+#1.8 CS: Generating the Neighborhood of a String
+#ACG
+#ACG
+def ImmediateNeighbors(Pattern):
+    Neighborhood =[]
+    for i in range(len(Pattern)):
+        symbol = Pattern[i]
+        print(symbol)
+        for j in 'ACGT':
+            if symbol == j:
+                Neighborhood.append(Pattern)
+            else:
+                print(j+Pattern[i+1:])
+                Neighborhood.append(j+Pattern[i+1:])
+        for j in 'ACGT':
+            if symbol == j:
+                Neighborhood.append(Pattern)
+            else:
+                Neighborhood.append(Pattern[0]+j+Pattern[2])
+        for j in 'ACGT':
+            if symbol == j:
+                Neighborhood.append(Pattern)
+            else:
+                Neighborhood.append(Pattern[0:2]+j)
+    return Neighborhood
+ 
