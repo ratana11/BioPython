@@ -820,26 +820,39 @@ chr(x) #converts an integer to a characterㅡ
 #1.8 CS: Generating the Neighborhood of a String
 #ACG
 #ACG
-def ImmediateNeighbors(Pattern):
-    Neighborhood =[]
-    for i in range(len(Pattern)):
-        symbol = Pattern[i]
-        print(symbol)
-        for j in 'ACGT':
-            if symbol == j:
-                Neighborhood.append(Pattern)
-            else:
-                print(j+Pattern[i+1:])
-                Neighborhood.append(j+Pattern[i+1:])
-        for j in 'ACGT':
-            if symbol == j:
-                Neighborhood.append(Pattern)
-            else:
-                Neighborhood.append(Pattern[0]+j+Pattern[2])
-        for j in 'ACGT':
-            if symbol == j:
-                Neighborhood.append(Pattern)
-            else:
-                Neighborhood.append(Pattern[0:2]+j)
-    return Neighborhood
- 
+def Neighbors(pattern, d):
+    '''
+    Find all strings with at most d mismatches to the given pattern
+    pattern (String): Original pattern of characters
+    d (int): Number of allowed mismatches
+    '''
+    if d == 0:
+        return [pattern]
+    if len(pattern) == 1:
+        return ['A', 'C', 'G', 'T']
+    answer = []
+    suffixNeighbors = Neighbors(pattern[1:], d)
+    for text in suffixNeighbors:
+        if HammingDistance(pattern[1:], text) < d:
+            for n in ['A', 'C', 'G', 'T']:
+                answer.append(n + text)
+        else:
+            answer.append(pattern[0] + text)
+
+    return(answer)
+
+
+def HammingDistance(p, q):
+    '''
+    Find the hamming distance between two strings
+
+    p (String): String to be compared to q
+    q (String): String to be compared to p
+    '''
+    ham = 0 + abs(len(p)-len(q))
+
+    for i in range(min(len(p), len(q))):
+        if p[i] != q[i]:
+            ham += 1
+
+    return(ham)
