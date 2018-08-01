@@ -1,6 +1,7 @@
 # BioPython
 
 https://www.coursera.org/specializations/bioinformatics#courses
+
 http://bioinformaticsalgorithms.com/
 
 The Bioinformatics Specifications includes six classes and one Bioinformatics Captone:
